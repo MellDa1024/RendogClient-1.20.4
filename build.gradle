@@ -1,0 +1,69 @@
+import groovy.json.JsonSlurper
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+    id "fabric-loom" version "1.6.5"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+version project.modVersion
+group project.modGroup
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://jitpack.io" }
+    maven { url = "https://maven.terraformersmc.com/releases" }
+    maven {
+        url = "https://maven.nucleoid.xyz/"
+        name = "Nucleoid"
+    }
+    maven { url = "https://maven.shedaniel.me/" }
+}
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraftVersion}"
+    mappings "net.fabricmc:yarn:${project.yarnMappings}:v2"
+
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.clothConfigVersion}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    modImplementation "net.fabricmc:fabric-loader:${project.fabricLoaderVersion}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricApiVersion}"
+    modImplementation("com.terraformersmc:modmenu:${project.modmenuVersion}")
+
+    include(modImplementation(fabricApi.module("fabric-resource-loader-v0", project.fabricApiVersion)))
+    include(modImplementation("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}"))
+    include(implementation("org.reflections:reflections:${project.reflectionsVersion}")); include "org.javassist:javassist:${project.javassistVersion}"
+}
+
+
+processResources {
+    def json = new JsonSlurper().parse(file("src/main/resources/fabric.mod.json"))
+    version = json.version
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release.set(17)
+}
+
+tasks.withType(KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = 17
+    }
+}
+
+java {
+    withSourcesJar()
+}

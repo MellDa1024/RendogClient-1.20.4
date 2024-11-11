@@ -1,0 +1,14 @@
+{
+  "text.autoconfig.rendogclient.title": "RendogClient 설정",
+  "text.autoconfig.rendogclient.option.cooldownConfig": "쿨타임",
+  "text.autoconfig.rendogclient.option.cooldownConfig.@Tooltip": "쿨타임 관련 설정입니다.",
+  "text.autoconfig.rendogclient.option.cooldownConfig.x": "X 좌표",
+  "text.autoconfig.rendogclient.option.cooldownConfig.x.@Tooltip": "쿨타임 GUI의 X 좌표를 수정합니다.",
+  "text.autoconfig.rendogclient.option.cooldownConfig.y": "Y 좌표",
+  "text.autoconfig.rendogclient.option.cooldownConfig.y.@Tooltip": "쿨타임 GUI의 Y 좌표를 수정합니다.",
+  "text.autoconfig.rendogclient.option.cooldownConfig.scale": "크기",
+  "text.autoconfig.rendogclient.option.cooldownConfig.scale.@Tooltip": "쿨타임 GUI의 크기를 수정합니다.",
+  "text.autoconfig.rendogclient.option.cooldownConfig.chatDelay": "채팅 인식 딜레이",
+  "text.autoconfig.rendogclient.option.cooldownConfig.chatDelay.@Tooltip[0]": "클라이언트가 다음 좌클릭 쿨타임 정보를 인식할 때까지 몇 ms를 기다릴지 설정합니다.",
+  "text.autoconfig.rendogclient.option.cooldownConfig.chatDelay.@Tooltip[1]": "값이 너무 낮을 경우, 다른 무기에 쿨타임이 덮어씌워질 수 있습니다."
+}

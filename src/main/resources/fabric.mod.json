@@ -1,0 +1,38 @@
+{
+    "schemaVersion": 1,
+    "id": "rendogclient",
+    "version": "Final",
+    "name": "RendogClient",
+    "description": "Client for RendogServer",
+    "authors": ["MellDa"],
+    "contact": {
+        "homepage": "https://github.com/MellDa1024/RendogClient",
+        "repo": "https://github.com/MellDa1024/RendogClient",
+        "issues": "https://github.com/MellDa1024/RendogClient/issues"
+    },
+    "license": "GPL-3.0",
+    "icon": "assets/rendogclient/rendog_icon.png",
+    "environment": "client",
+    "mixins": [
+        "mixins.rendog.json"
+    ],
+    "entrypoints": {
+        "client": [
+            {
+                "adapter": "kotlin",
+                "value": "kr.rendog.client.RendogClient"
+            }
+        ],
+        "modmenu": [
+            {
+                "adapter": "kotlin",
+                "value": "kr.rendog.client.modmenu.SettingMenu"
+            }
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=0.16.9",
+        "fabric-language-kotlin": ">=1.10.17+kotlin.1.9.22",
+        "minecraft": "1.20.4"
+    }
+}

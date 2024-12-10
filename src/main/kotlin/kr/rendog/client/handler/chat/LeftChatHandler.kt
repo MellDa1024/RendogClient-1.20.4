@@ -1,21 +1,15 @@
 package kr.rendog.client.handler.chat
 
-import kr.rendog.client.config.MainConfig
+import kr.rendog.client.config.Config
 import kr.rendog.client.data.CoolDownType
 import kr.rendog.client.service.WeaponCoolService
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.text.Text
-import net.minecraft.text.TextColor
 import java.util.regex.Pattern
 
-class LeftChatHandler (
-    private val weaponCoolService: WeaponCoolService,
-    private val config: MainConfig
-): ClientReceiveMessageEvents.Game {
-    companion object {
-        private const val CHAT_DELAY = 150
-    }
-
+class LeftChatHandler(
+    private val weaponCoolService: WeaponCoolService
+) : ClientReceiveMessageEvents.Game {
     private val cdPattern = Pattern.compile("([0-9.]*)초")
     private val cdMinPattern = Pattern.compile("([0-9]*)분 ([0-9.]*)초")
 
@@ -26,7 +20,7 @@ class LeftChatHandler (
         val cooldown = message.siblings.getOrNull(12) ?: return
         if (cooldown.style.color?.name != "yellow") return
         if (!message.string.startsWith("   [ RD ]   재사용 대기시간이 ")) return
-        if (System.currentTimeMillis() - weaponCoolService.getLastSwapTime() <= config.cooldownConfig.chatDelay) return
+        if (System.currentTimeMillis() - weaponCoolService.getLastSwapTime() <= Config.cooldownChatDelay) return
 
         val cooldownText = cooldown.string
 

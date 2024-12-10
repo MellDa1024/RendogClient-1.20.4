@@ -1,8 +1,9 @@
 package kr.rendog.client.hud
 
-import kr.rendog.client.RendogClient
-import kr.rendog.client.config.MainConfig
+import kr.rendog.client.config.Config
+import kr.rendog.client.data.CoolDownType
 import kr.rendog.client.registry.WeaponCoolRegistry
+import kr.rendog.client.service.WeaponDataService
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
@@ -12,24 +13,25 @@ import kotlin.math.roundToInt
 
 class CooldownHud (
     private val weaponCoolRegistry: WeaponCoolRegistry,
-    private val config: MainConfig
+    private val weaponDataService: WeaponDataService
 ): HudRenderCallback {
 
     private val mc = MinecraftClient.getInstance()
 
     override fun onHudRender(drawContext: DrawContext, tickDelta: Float) {
+        if (!Config.cooldownEnabled) return
         val player = mc.player ?: return
         val matrices = drawContext.matrices
 
         val baseX = (mc.window.scaledWidth / 2.0f).roundToInt().toFloat() - 0.5f
         val baseY = (mc.window.scaledHeight / 2.0f).roundToInt().toFloat()
 
-        val x = if (config.cooldownConfig.x != 0) baseX * (1 + config.cooldownConfig.x / 100.0f)
+        val x = if (Config.cooldownGUIX != 0.0) baseX * (1 + Config.cooldownGUIX.toFloat())
         else baseX
-        val y = if (config.cooldownConfig.y != 0) baseY * (1 + config.cooldownConfig.y / 100.0f)
+        val y = if (Config.cooldownGUIY != 0.0) baseY * (1 + Config.cooldownGUIY.toFloat())
         else baseY
 
-        val scale = config.cooldownConfig.scale / 100.0f
+        val scale = Config.cooldownGUIScale.toFloat()
         matrices.push()
         matrices.translate(x, y, 0.0f)
         matrices.translate(-90.0f * scale, 0.0f, 0.0f)
@@ -44,14 +46,16 @@ class CooldownHud (
     private fun drawCooldown(drawContext: DrawContext, player: PlayerEntity, slot: Int, x: Int, y: Int) {
         val weapon = player.inventory.getStack(slot)
         val weaponName = weapon.name.string
+        val group = weaponDataService.getGroup(weaponName)
 
-        val cd = weaponCoolRegistry.find(weaponName) ?: run {
+        val cd = weaponCoolRegistry.find(group) ?: run {
             drawCooldownItem(drawContext, weapon, x, y, "", "")
             return
         }
 
-        val rightCooldown = ((cd.rightCD - System.currentTimeMillis()).toDouble() / 100.0).roundToInt() / 10.0
-        val leftCooldown = ((cd.leftCD - System.currentTimeMillis()).toDouble() / 100.0).roundToInt() / 10.0
+        val currentMillis = System.currentTimeMillis()
+        val rightCooldown = ((cd.rightCD + (weaponDataService.getFinalWeaponCooldown(weaponName, CoolDownType.RIGHT) * 1000) - currentMillis) / 100.0).roundToInt() / 10.0
+        val leftCooldown = ((cd.leftCD + (weaponDataService.getFinalWeaponCooldown(weaponName, CoolDownType.LEFT) * 1000) - currentMillis) / 100.0).roundToInt() / 10.0
 
         val rightCoolText = if (rightCooldown <= 0) ""
         else if (rightCooldown > 60) "§c${convert2Min(rightCooldown)}"
@@ -64,7 +68,7 @@ class CooldownHud (
     }
 
     private fun drawCooldownItem(drawContext: DrawContext, itemStack: ItemStack, x: Int, y: Int, rightCool: String, leftCool: String) {
-        drawContext.drawItemWithoutEntity(itemStack, x, y)
+        if (!Config.cooldownGUIRenderOnlyText) drawContext.drawItemWithoutEntity(itemStack, x, y)
         if (leftCool.isBlank() && rightCool.isBlank()) return
 
         drawContext.matrices.push()

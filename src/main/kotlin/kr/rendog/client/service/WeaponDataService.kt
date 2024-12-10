@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import kr.rendog.client.RendogClient
+import kr.rendog.client.config.Config
 import kr.rendog.client.data.CoolDownType
 import kr.rendog.client.data.WeaponCDData
 import kr.rendog.client.utils.ConnectionUtils
@@ -11,14 +12,16 @@ import kr.rendog.client.utils.MessageUtils
 import kr.rendog.client.utils.TextUtils.deColorize
 import java.util.concurrent.ConcurrentHashMap
 
-object WeaponDataService {
+class WeaponDataService {
+    private companion object {
+        private const val URL = "https://raw.githubusercontent.com/MellDa1024/RendogDataBase/main/WeaponDataV3.json"
+    }
+
     private val gson = GsonBuilder().setPrettyPrinting().create()
     private var coolDown = ConcurrentHashMap<String, WeaponCDData>()
     private lateinit var coolDownData: WeaponDataList
     private var enabled = false
-    private val availableVersion = mutableListOf("b7", "b8")
-
-    private const val url = "https://raw.githubusercontent.com/MellDa1024/RendogDataBase/main/WeaponDataV2.json"
+    private val availableVersion = mutableListOf("Final")
 
     fun inDatabase(item: String): Boolean {
         return if (enabled) {
@@ -29,7 +32,7 @@ object WeaponDataService {
         }
     }
 
-    fun getCD(item: String, cdType: CoolDownType): Double {
+    private fun getCD(item: String, cdType: CoolDownType): Double {
         return if (enabled) {
             when (cdType) {
                 CoolDownType.RIGHT -> coolDown[item.deColorize()]?.rightCD ?: 0.0
@@ -41,13 +44,29 @@ object WeaponDataService {
         }
     }
 
+    fun getFinalWeaponCooldown(weaponName: String, type: CoolDownType): Double {
+        val cooldown = getCD(weaponName, type)
+        val cdr = Config.cdr
+        return if (cdr == 0.0) cooldown
+        else cooldown * (1 - cdr / 100.0)
+    }
+
+    fun getGroup(item: String): String {
+        return if (enabled) {
+            coolDown[item.deColorize()]?.cooldownGroup ?: item.deColorize()
+        } else {
+            MessageUtils.sendErrorMessage("Failed to load CoolDown data.")
+            item.deColorize()
+        }
+    }
+
     fun isAbleInVillage(item: String): Boolean {
         return coolDown[item.deColorize()]?.inVillage ?: false
     }
 
     fun loadCoolDownData(): Boolean {
         return try {
-            val rawJson = ConnectionUtils.requestRawJsonFrom(url)
+            val rawJson = ConnectionUtils.requestRawJsonFrom(URL)
             coolDownData = gson.fromJson(rawJson, object : TypeToken<WeaponDataList>() {}.type)
             loadCoolDownData(coolDownData)
         } catch (e: Exception) {
@@ -89,7 +108,12 @@ object WeaponDataService {
     }
 
     private fun register(weaponName: String, weaponData: WeaponData, cdIndex: Int) {
-        coolDown[weaponName] = WeaponCDData(weaponData.leftCD[cdIndex], weaponData.rightCD[cdIndex], weaponData.inVillage)
+        coolDown[weaponName] = WeaponCDData(
+            weaponData.cooldownGroup,
+            weaponData.leftCD[cdIndex],
+            weaponData.rightCD[cdIndex],
+            weaponData.inVillage
+        )
         //RendogClient.LOG.info("$weaponName registered. Data : ${coolDown[weaponName]}")
     }
 
@@ -114,7 +138,9 @@ object WeaponDataService {
         @SerializedName("RightCoolDown")
         val rightCD: Array<Double>,
         @SerializedName("InVillage")
-        val inVillage: Boolean
+        val inVillage: Boolean,
+        @SerializedName("CoolDownGroup")
+        val cooldownGroup: String
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -128,6 +154,7 @@ object WeaponDataService {
             if (!leftCD.contentEquals(other.leftCD)) return false
             if (!rightCD.contentEquals(other.rightCD)) return false
             if (inVillage != other.inVillage) return false
+            if (cooldownGroup != other.cooldownGroup) return false
 
             return true
         }
@@ -139,6 +166,7 @@ object WeaponDataService {
             result = 31 * result + leftCD.contentHashCode()
             result = 31 * result + rightCD.contentHashCode()
             result = 31 * result + inVillage.hashCode()
+            result = 31 * result + cooldownGroup.hashCode()
             return result
         }
     }

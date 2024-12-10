@@ -12,7 +12,7 @@ class MoonlightHandler (
         val moonlightName = weaponCoolService.getMoonlightName()
         if (moonlightName.isEmpty()) return
         if (message.string.trim() == "문라이트가 영혼을 방출합니다!") {
-            weaponCoolService.tryUpdateFromChat(moonlightName, CoolDownType.RIGHT)
+            weaponCoolService.tryUpdateFromChat(moonlightName, CoolDownType.RIGHT, null)
             weaponCoolService.resetMoonlightName()
         }
     }

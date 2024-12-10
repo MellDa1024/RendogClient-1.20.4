@@ -6,16 +6,15 @@ import java.util.concurrent.ConcurrentHashMap
 class WeaponCoolRegistry {
     private val cooldown = ConcurrentHashMap<String, PlayerWeaponCD>()
 
-    fun register(weaponName: String) {
-        val time = System.currentTimeMillis()
-        cooldown[weaponName] = PlayerWeaponCD(time, time)
+    fun register(group: String) {
+        cooldown[group] = PlayerWeaponCD(0L, 0L)
     }
 
-    fun find(weaponName: String): PlayerWeaponCD? {
-        return cooldown[weaponName]
+    fun find(group: String): PlayerWeaponCD? {
+        return cooldown[group]
     }
 
-    fun get(weaponName: String): PlayerWeaponCD {
-        return cooldown[weaponName]!!
+    fun get(group: String): PlayerWeaponCD {
+        return cooldown[group]!!
     }
 }

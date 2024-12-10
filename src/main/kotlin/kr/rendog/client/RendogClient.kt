@@ -1,6 +1,7 @@
 package kr.rendog.client
 
-import kr.rendog.client.config.MainConfig
+import eu.midnightdust.lib.config.MidnightConfig
+import kr.rendog.client.config.Config
 import kr.rendog.client.handler.LeftClickHandler
 import kr.rendog.client.handler.RightClickHandler
 import kr.rendog.client.handler.ServerJoinHandler
@@ -9,14 +10,10 @@ import kr.rendog.client.handler.chat.LeftChatHandler
 import kr.rendog.client.handler.chat.MoonlightHandler
 import kr.rendog.client.handler.chat.RightChatHandler
 import kr.rendog.client.hud.CooldownHud
+import kr.rendog.client.hud.HealthHud
 import kr.rendog.client.registry.WeaponCoolRegistry
 import kr.rendog.client.service.WeaponCoolService
 import kr.rendog.client.service.WeaponDataService
-import me.shedaniel.autoconfig.AutoConfig
-import me.shedaniel.autoconfig.ConfigData
-import me.shedaniel.autoconfig.annotation.Config
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
@@ -28,7 +25,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 
-class RendogClient: ClientModInitializer {
+class RendogClient : ClientModInitializer {
 
     companion object {
         const val MOD_ID = "rendogclient"
@@ -36,24 +33,15 @@ class RendogClient: ClientModInitializer {
     }
 
     override fun onInitializeClient() {
-        WeaponDataService.loadCoolDownData()
-
+        MidnightConfig.init(MOD_ID, Config::class.java)
+        val weaponDataService = WeaponDataService()
+        weaponDataService.loadCoolDownData()
         val weaponCoolRegistry = WeaponCoolRegistry()
-        val weaponCoolService = WeaponCoolService(weaponCoolRegistry)
+        val weaponCoolService = WeaponCoolService(weaponCoolRegistry, weaponDataService)
 
-        AutoConfig.register(
-            MainConfig::class.java,
-            PartitioningSerializer.wrap { definition: Config?, configClass: Class<ConfigData> ->
-                GsonConfigSerializer(
-                    definition,
-                    configClass
-                )
-            }
-        )
+        HudRenderCallback.EVENT.register(CooldownHud(weaponCoolRegistry, weaponDataService))
+        HudRenderCallback.EVENT.register(HealthHud())
 
-        val config = AutoConfig.getConfigHolder(MainConfig::class.java).config
-
-        HudRenderCallback.EVENT.register(CooldownHud(weaponCoolRegistry, config))
         ClientPlayConnectionEvents.JOIN.register(ServerJoinHandler())
 
         UseItemCallback.EVENT.register(RightClickHandler(weaponCoolService))
@@ -62,7 +50,7 @@ class RendogClient: ClientModInitializer {
         ClientTickEvents.START_WORLD_TICK.register(TickHandler(weaponCoolService))
 
         ClientReceiveMessageEvents.GAME.register(RightChatHandler(weaponCoolService))
-        ClientReceiveMessageEvents.GAME.register(LeftChatHandler(weaponCoolService, config))
+        ClientReceiveMessageEvents.GAME.register(LeftChatHandler(weaponCoolService))
         ClientReceiveMessageEvents.GAME.register(MoonlightHandler(weaponCoolService))
     }
 }

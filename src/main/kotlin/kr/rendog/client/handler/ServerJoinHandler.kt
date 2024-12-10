@@ -13,7 +13,7 @@ class ServerJoinHandler: Join {
     override fun onPlayReady(handler: ClientPlayNetworkHandler, sender: PacketSender, client: MinecraftClient) {
         val address = handler.serverInfo?.address
         if (address == null || !rendogServerIp.contains(address.lowercase())) {
-            RendogClient.LOG.info("Player is not in RendogServer! Disconnecting, it may crash in SinglePlayer...")
+            RendogClient.LOG.info("Player is not in RendogServer! Disconnecting, it may crash or bricked in SinglePlayer...")
             handler.onDisconnected(Text.literal("RendogClient is only available in RendogServer."))
         }
     }

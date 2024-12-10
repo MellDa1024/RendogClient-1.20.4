@@ -8,7 +8,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 
 class WeaponCoolService(
-    private val weaponCoolRegistry: WeaponCoolRegistry
+    private val weaponCoolRegistry: WeaponCoolRegistry,
+    private val weaponDataService: WeaponDataService
 ) {
     private var moonLightName = ""
     private var rightClickChat = ""
@@ -19,26 +20,33 @@ class WeaponCoolService(
 
     fun tryUpdate(player: PlayerEntity, weapon: ItemStack, type: CoolDownType) {
         val weaponName = weapon.name.string
-        val cd = weaponCoolRegistry.find(weaponName)
-        if (cd == null) weaponCoolRegistry.register(weaponName)
+        val group = weaponDataService.getGroup(weaponName)
+        val cd = weaponCoolRegistry.find(group)
+        if (cd == null) weaponCoolRegistry.register(group)
         when (type) {
             CoolDownType.RIGHT -> rightClickChat = weaponName
             CoolDownType.LEFT -> leftClickChat = weaponName
         }
-        if (!checkVillageAndValidation(player, weaponName)) return
+        if (!checkVillageValidation(player, weaponName)) return
         if (type == CoolDownType.RIGHT) {
             if (weaponName.contains("문라이트") && !weaponName.contains("초월")) {
                 moonLightName = weaponName
                 return
             }
         }
-        val currentCd = if (type == CoolDownType.LEFT) cd?.leftCD else cd?.rightCD
-        if (currentCd == null || (currentCd - System.currentTimeMillis()) <= 0) update(weaponName, type, false)
+        val lastUsed = if (type == CoolDownType.LEFT) cd?.leftCD else cd?.rightCD
+        if (lastUsed == null || (System.currentTimeMillis() - lastUsed) > (weaponDataService.getFinalWeaponCooldown(weaponName, type) * 1000)) {
+            update(group, type, System.currentTimeMillis())
+        }
     }
 
-    fun tryUpdateFromChat(weaponName: String, type: CoolDownType, cooldown: Double? = null) {
-        if (cooldown == null) update(weaponName, type, true)
-        else update(weaponName, type, cooldown, true)
+    fun tryUpdateFromChat(weaponName: String, type: CoolDownType, cooldown: Double?) {
+        val group = weaponDataService.getGroup(weaponName)
+        if (cooldown == null) update(group, type, System.currentTimeMillis())
+        else {
+            val lastUsed = weaponDataService.getFinalWeaponCooldown(weaponName, type) - cooldown
+            update(group, type, System.currentTimeMillis() - (lastUsed * 1000).toLong())
+        }
     }
 
     fun getLastSwapTime(): Long { return lastSwapTime }
@@ -56,31 +64,20 @@ class WeaponCoolService(
     fun resetRightClickChat() { rightClickChat = "" }
     fun resetLeftClickChat() { leftClickChat = "" }
 
-    private fun update(weaponName: String, type: CoolDownType, isChatDetection: Boolean) {
-        val cooldown = WeaponDataService.getCD(weaponName, type)
-        update(weaponName, type, cooldown, isChatDetection)
-    }
-
-
-    private fun update(weaponName: String, type: CoolDownType, cooldown: Double, isChatDetection: Boolean) {
-        if (cooldown == 0.0) return
-        val finalCooldown = if (isChatDetection) cooldown
-        //TODO(CDR)
-        else cooldown
-
+    private fun update(group: String, type: CoolDownType, time: Long) {
         try {
             when (type) {
-                CoolDownType.RIGHT -> weaponCoolRegistry.get(weaponName).rightCD = System.currentTimeMillis() + (1000 * finalCooldown).toLong()
-                CoolDownType.LEFT -> weaponCoolRegistry.get(weaponName).leftCD = System.currentTimeMillis() + (1000 * finalCooldown).toLong()
+                CoolDownType.RIGHT -> weaponCoolRegistry.get(group).rightCD = time
+                CoolDownType.LEFT -> weaponCoolRegistry.get(group).leftCD = time
             }
         } catch (e: Exception) {
-            RendogClient.LOG.error("Exception while updating the weapon cooldown. WeaponName: $weaponName")
+            RendogClient.LOG.error("Exception while updating the weapon cooldown. WeaponGroup: $group")
             e.printStackTrace()
         }
     }
 
-    private fun checkVillageAndValidation(player: PlayerEntity, weaponName: String): Boolean {
-        return ((player.world.spawnPos != BlockPos(278, 11, -134)) ||
-                ((player.world.spawnPos == BlockPos(278, 11, -134)) && WeaponDataService.isAbleInVillage(weaponName)))
+    private fun checkVillageValidation(player: PlayerEntity, weaponName: String): Boolean {
+        return ((player.world.spawnPos != BlockPos(0, 0, 0)) ||
+                ((player.world.spawnPos == BlockPos(0, 0, 0)) && weaponDataService.isAbleInVillage(weaponName)))
     }
 }

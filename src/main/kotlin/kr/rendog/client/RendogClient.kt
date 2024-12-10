@@ -10,6 +10,7 @@ import kr.rendog.client.handler.chat.LeftChatHandler
 import kr.rendog.client.handler.chat.MoonlightHandler
 import kr.rendog.client.handler.chat.RightChatHandler
 import kr.rendog.client.hud.CooldownHud
+import kr.rendog.client.hud.GodModeInfoHud
 import kr.rendog.client.hud.HealthHud
 import kr.rendog.client.registry.WeaponCoolRegistry
 import kr.rendog.client.service.WeaponCoolService
@@ -41,6 +42,7 @@ class RendogClient : ClientModInitializer {
 
         HudRenderCallback.EVENT.register(CooldownHud(weaponCoolRegistry, weaponDataService))
         HudRenderCallback.EVENT.register(HealthHud())
+        HudRenderCallback.EVENT.register(GodModeInfoHud())
 
         ClientPlayConnectionEvents.JOIN.register(ServerJoinHandler())
 

@@ -19,7 +19,7 @@ class HealthHud: HudRenderCallback {
         val player = mc.player ?: return
         val matrices = drawContext.matrices
 
-        val baseX = (mc.window.scaledWidth / 2.0f).roundToInt().toFloat() - 0.5f
+        val baseX = (mc.window.scaledWidth / 2.0f).roundToInt().toFloat()
         val baseY = (mc.window.scaledHeight / 2.0f).roundToInt().toFloat()
 
         val x = if (Config.healthGUIX != 0.0) baseX * (1 + Config.healthGUIX.toFloat())
@@ -40,7 +40,7 @@ class HealthHud: HudRenderCallback {
         else TextColor.parse(Config.healthGUILowHealthColor).result().getOrNull() ?: TextColor.fromRgb(10027008)
 
         val text = Text.literal(Config.healthGUIPrefix).append(Text.literal(" ${health.roundToLong()}").withColor(color.rgb))
-        drawContext.drawText(mc.textRenderer, text, -mc.textRenderer.getWidth("${Config.healthGUIPrefix} "), 0, 16777215, true)
+        drawContext.drawText(mc.textRenderer, text, -mc.textRenderer.getWidth("${Config.healthGUIPrefix} ") - mc.textRenderer.getWidth("${health.roundToLong()}") / 2, 0, 16777215, Config.healthGUITextShadow)
         matrices.pop()
     }
 }

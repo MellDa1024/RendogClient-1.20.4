@@ -6,6 +6,7 @@ class Config : MidnightConfig() {
     companion object {
         private const val COOLDOWN = "cooldown"
         private const val HEALTH = "health"
+        private const val GODMODEINFO = "godmodeinfo"
 
         //Cooldown
         @JvmField
@@ -35,6 +36,10 @@ class Config : MidnightConfig() {
         @JvmField
         @Entry(category = COOLDOWN)
         var cooldownGUIRenderOnlyText = false
+
+        @JvmField
+        @Entry(category = COOLDOWN)
+        var cooldownGUITextShadow = true
 
         //Health
         @JvmField
@@ -76,5 +81,41 @@ class Config : MidnightConfig() {
         @JvmField
         @Entry(category = HEALTH, width = 7, isColor = true)
         var healthGUIFullHealthColor = "#F29900"
+
+        @JvmField
+        @Entry(category = HEALTH)
+        var healthGUITextShadow = true
+
+        //GodModeInfo
+        @JvmField
+        @Entry(category = GODMODEINFO)
+        var godModeInfoEnabled = true
+
+        @JvmField
+        @Entry(category = GODMODEINFO, isSlider = true, min = -1.0, max = 1.0, precision = 100)
+        var godModeInfoGUIX = 0.0
+
+        @JvmField
+        @Entry(category = GODMODEINFO, isSlider = true, min = -1.0, max = 1.0, precision = 100)
+        var godModeInfoGUIY = 0.0
+
+        @JvmField
+        @Entry(category = GODMODEINFO, isSlider = true, min = 1.0, max = 3.0, precision = 100)
+        var godModeInfoGUIScale = 1.0
+
+        @JvmField
+        @Entry(category = GODMODEINFO)
+        var godModeInfoText = "You are on the &6&lGodMode!\\nTime Remaining : &6&l%DURATION% %UNIT%"
+
+        @JvmField
+        @Entry(category = GODMODEINFO)
+        var godModeInfoDurationUnit = DurationUnitEnum.SECOND
+        enum class DurationUnitEnum {
+            SECOND, TICK
+        }
+
+        @JvmField
+        @Entry(category = GODMODEINFO)
+        var godModeInfoGUITextShadow = true
     }
 }

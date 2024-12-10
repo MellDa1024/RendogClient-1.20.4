@@ -74,8 +74,8 @@ class CooldownHud (
         drawContext.matrices.push()
         drawContext.matrices.translate(0.0f, 0.0f, 200.0f)
 
-        if (leftCool.isNotBlank()) drawContext.drawText(mc.textRenderer, leftCool, x, y, 16777215, true)
-        if (rightCool.isNotBlank()) drawContext.drawText(mc.textRenderer, rightCool, x + 17 - mc.textRenderer.getWidth(rightCool), y + 9, 16777215, true)
+        if (leftCool.isNotBlank()) drawContext.drawText(mc.textRenderer, leftCool, x, y, 16777215, Config.cooldownGUITextShadow)
+        if (rightCool.isNotBlank()) drawContext.drawText(mc.textRenderer, rightCool, x + 17 - mc.textRenderer.getWidth(rightCool), y + 9, 16777215, Config.cooldownGUITextShadow)
 
         drawContext.matrices.pop()
     }

@@ -25,6 +25,11 @@ repositories {
     }
     maven { url = "https://api.modrinth.com/maven" }
 }
+
+loom {
+    accessWidenerPath = file("src/main/resources/rendogclient.accesswidener")
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraftVersion}"
     mappings "net.fabricmc:yarn:${project.yarnMappings}:v2"

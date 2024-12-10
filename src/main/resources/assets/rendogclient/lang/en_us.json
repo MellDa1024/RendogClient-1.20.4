@@ -54,7 +54,20 @@
   "rendogclient.midnightconfig.enum.DurationUnitEnum.TICK": "Tick",
   "rendogclient.midnightconfig.godModeInfoGUITextShadow": "Text Shadow",
   "rendogclient.midnightconfig.godModeInfoGUITextShadow.tooltip": "Whether to render text shadows.",
+  "rendogclient.midnightconfig.playerModelEnabled": "Enabled",
+  "rendogclient.midnightconfig.playerModelEnabled.tooltip": "Enables the PlayerModel GUI.",
+  "rendogclient.midnightconfig.playerModelGUIX": "X Position",
+  "rendogclient.midnightconfig.playerModelGUIX.tooltip": "The X position of the PlayerModel GUI.",
+  "rendogclient.midnightconfig.playerModelGUIY": "Y Position",
+  "rendogclient.midnightconfig.playerModelGUIY.tooltip": "The Y position of the PlayerModel GUI.",
+  "rendogclient.midnightconfig.playerModelGUIScale": "Scale",
+  "rendogclient.midnightconfig.playerModelGUIScale.tooltip": "The scale factor of the PlayerModel GUI.",
+  "rendogclient.midnightconfig.playerModelEmulateYaw": "Emulate Yaw",
+  "rendogclient.midnightconfig.playerModelEmulateYaw.tooltip": "Emulates player's yaw.",
+  "rendogclient.midnightconfig.playerModelEmulatePitch": "Emulate Pitch",
+  "rendogclient.midnightconfig.playerModelEmulatePitch.tooltip": "Emulates player's pitch.",
   "rendogclient.midnightconfig.category.cooldown": "Cooldown",
   "rendogclient.midnightconfig.category.health": "Health",
-  "rendogclient.midnightconfig.category.godmodeinfo": "GodModeInfo"
+  "rendogclient.midnightconfig.category.godmodeinfo": "GodModeInfo",
+  "rendogclient.midnightconfig.category.playermodel": "PlayerModel"
 }

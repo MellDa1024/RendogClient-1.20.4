@@ -54,7 +54,20 @@
   "rendogclient.midnightconfig.enum.DurationUnitEnum.TICK": "틱",
   "rendogclient.midnightconfig.godModeInfoGUITextShadow": "텍스트 그림자",
   "rendogclient.midnightconfig.godModeInfoGUITextShadow.tooltip": "텍스트 그림자를 렌더링할지 여부를 선택합니다.",
+  "rendogclient.midnightconfig.playerModelEnabled": "활성화",
+  "rendogclient.midnightconfig.playerModelEnabled.tooltip": "플레이어 모델 GUI를 활성화합니다.",
+  "rendogclient.midnightconfig.playerModelGUIX": "X 위치",
+  "rendogclient.midnightconfig.playerModelGUIX.tooltip": "플레이어 모델 GUI의 X 좌표를 설정합니다.",
+  "rendogclient.midnightconfig.playerModelGUIY": "Y 위치",
+  "rendogclient.midnightconfig.playerModelGUIY.tooltip": "플레이어 모델 GUI의 Y 좌표를 설정합니다.",
+  "rendogclient.midnightconfig.playerModelGUIScale": "크기",
+  "rendogclient.midnightconfig.playerModelGUIScale.tooltip": "플레이어 모델 GUI의 크기 배율을 설정합니다.",
+  "rendogclient.midnightconfig.playerModelEmulateYaw": "플레이어 Yaw 적용",
+  "rendogclient.midnightconfig.playerModelEmulateYaw.tooltip": "플레이어의 Yaw값을 적용합니다.",
+  "rendogclient.midnightconfig.playerModelEmulatePitch": "플레이어 Pitch 적용",
+  "rendogclient.midnightconfig.playerModelEmulatePitch.tooltip": "플레이어의 Pitch값을 적용합니다.",
   "rendogclient.midnightconfig.category.cooldown": "쿨타임",
   "rendogclient.midnightconfig.category.health": "체력",
-  "rendogclient.midnightconfig.category.godmodeinfo": "무적 정보"
+  "rendogclient.midnightconfig.category.godmodeinfo": "무적 정보",
+  "rendogclient.midnightconfig.category.playermodel": "플레이어 모델"
 }

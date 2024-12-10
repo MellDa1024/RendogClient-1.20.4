@@ -13,9 +13,7 @@
     "license": "GPL-3.0",
     "icon": "assets/rendogclient/rendog_icon.png",
     "environment": "client",
-    "mixins": [
-        "mixins.rendog.json"
-    ],
+    "accessWidener": "rendogclient.accesswidener",
     "entrypoints": {
         "client": [
             {

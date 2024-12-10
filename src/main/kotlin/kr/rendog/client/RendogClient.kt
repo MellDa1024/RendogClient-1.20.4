@@ -12,6 +12,7 @@ import kr.rendog.client.handler.chat.RightChatHandler
 import kr.rendog.client.hud.CooldownHud
 import kr.rendog.client.hud.GodModeInfoHud
 import kr.rendog.client.hud.HealthHud
+import kr.rendog.client.hud.PlayerModelHud
 import kr.rendog.client.registry.WeaponCoolRegistry
 import kr.rendog.client.service.WeaponCoolService
 import kr.rendog.client.service.WeaponDataService
@@ -30,6 +31,7 @@ class RendogClient : ClientModInitializer {
 
     companion object {
         const val MOD_ID = "rendogclient"
+        const val VERSION = "Final"
         val LOG: Logger = LoggerFactory.getLogger("RendogClient")
     }
 
@@ -43,6 +45,7 @@ class RendogClient : ClientModInitializer {
         HudRenderCallback.EVENT.register(CooldownHud(weaponCoolRegistry, weaponDataService))
         HudRenderCallback.EVENT.register(HealthHud())
         HudRenderCallback.EVENT.register(GodModeInfoHud())
+        HudRenderCallback.EVENT.register(PlayerModelHud())
 
         ClientPlayConnectionEvents.JOIN.register(ServerJoinHandler())
 

@@ -21,7 +21,6 @@ class WeaponDataService {
     private var coolDown = ConcurrentHashMap<String, WeaponCDData>()
     private lateinit var coolDownData: WeaponDataList
     private var enabled = false
-    private val availableVersion = mutableListOf("Final")
 
     fun inDatabase(item: String): Boolean {
         return if (enabled) {
@@ -77,7 +76,7 @@ class WeaponDataService {
 
     private fun loadCoolDownData(coolDownData: WeaponDataList): Boolean {
         coolDown.clear()
-        if (!availableVersion.contains(coolDownData.version)) {
+        if (!coolDownData.availableVersions.contains(RendogClient.VERSION.lowercase())) {
             RendogClient.LOG.error("Update your RendogClient to new version.")
             return false
         } else {
@@ -120,11 +119,31 @@ class WeaponDataService {
     data class WeaponDataList(
         @SerializedName("Enabled")
         var enabled: Boolean = true,
-        @SerializedName("VersionRequires")
-        val version: String,
+        @SerializedName("AvailableVersions")
+        val availableVersions: Array<String>,
         @SerializedName("WeaponList")
         val weaponList: LinkedHashSet<WeaponData>
-    )
+    ) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as WeaponDataList
+
+            if (enabled != other.enabled) return false
+            if (!availableVersions.contentEquals(other.availableVersions)) return false
+            if (weaponList != other.weaponList) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = enabled.hashCode()
+            result = 31 * result + availableVersions.contentHashCode()
+            result = 31 * result + weaponList.hashCode()
+            return result
+        }
+    }
 
     data class WeaponData(
         @SerializedName("WeaponName")

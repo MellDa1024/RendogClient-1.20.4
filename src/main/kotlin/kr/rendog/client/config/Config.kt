@@ -7,6 +7,7 @@ class Config : MidnightConfig() {
         private const val COOLDOWN = "cooldown"
         private const val HEALTH = "health"
         private const val GODMODEINFO = "godmodeinfo"
+        private const val PLAYERMODEL = "playermodel"
 
         //Cooldown
         @JvmField
@@ -117,5 +118,30 @@ class Config : MidnightConfig() {
         @JvmField
         @Entry(category = GODMODEINFO)
         var godModeInfoGUITextShadow = true
+
+        //PlayerModel
+        @JvmField
+        @Entry(category = PLAYERMODEL)
+        var playerModelEnabled = false
+
+        @JvmField
+        @Entry(category = PLAYERMODEL, isSlider = true, min = -1.0, max = 1.0, precision = 100)
+        var playerModelGUIX = 0.0
+
+        @JvmField
+        @Entry(category = PLAYERMODEL, isSlider = true, min = -1.0, max = 1.0, precision = 100)
+        var playerModelGUIY = 0.0
+
+        @JvmField
+        @Entry(category = PLAYERMODEL, isSlider = true, min = 1.0, max = 3.0, precision = 100)
+        var playerModelGUIScale = 1.0
+
+        @JvmField
+        @Entry(category = PLAYERMODEL)
+        var playerModelEmulateYaw = true
+
+        @JvmField
+        @Entry(category = PLAYERMODEL)
+        var playerModelEmulatePitch = true
     }
 }

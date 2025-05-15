@@ -8,6 +8,7 @@ class Config : MidnightConfig() {
         private const val HEALTH = "health"
         private const val GODMODEINFO = "godmodeinfo"
         private const val PLAYERMODEL = "playermodel"
+        private const val LOOTPERMINUTE = "lootperminute"
 
         //Cooldown
         @JvmField
@@ -27,6 +28,10 @@ class Config : MidnightConfig() {
         var cooldownGUIScale = 1.0
 
         @JvmField
+        @Entry(category = COOLDOWN, isSlider = true, min = 0.0, max = 3.0, precision = 1)
+        var cooldownGUIExtension = 0.0
+
+        @JvmField
         @Entry(category = COOLDOWN, isSlider = true, min = 100.0, max = 1000.0, precision = 10)
         var cooldownChatDelay = 150.0
 
@@ -37,6 +42,14 @@ class Config : MidnightConfig() {
         @JvmField
         @Entry(category = COOLDOWN)
         var cooldownGUIRenderOnlyText = false
+
+        @JvmField
+        @Entry(category = COOLDOWN, width = 7, isColor = true)
+        var cooldownGUILeftColor = "#FFFF55"
+
+        @JvmField
+        @Entry(category = COOLDOWN, width = 7, isColor = true)
+        var cooldownGUIRightColor = "#FF5555"
 
         @JvmField
         @Entry(category = COOLDOWN)
@@ -143,5 +156,42 @@ class Config : MidnightConfig() {
         @JvmField
         @Entry(category = PLAYERMODEL)
         var playerModelEmulatePitch = true
+
+        //LPM
+        @JvmField
+        @Entry(category = LOOTPERMINUTE)
+        var lootPerMinuteEnabled = true
+
+        @JvmField
+        @Entry(category = LOOTPERMINUTE, isSlider = true, min = -1.0, max = 1.0, precision = 100)
+        var lootPerMinuteGUIX = 0.0
+
+        @JvmField
+        @Entry(category = LOOTPERMINUTE, isSlider = true, min = -1.0, max = 1.0, precision = 100)
+        var lootPerMinuteGUIY = 0.0
+
+        @JvmField
+        @Entry(category = LOOTPERMINUTE, isSlider = true, min = 1.0, max = 3.0, precision = 100)
+        var lootPerMinuteGUIScale = 1.0
+
+        @JvmField
+        @Entry(category = LOOTPERMINUTE)
+        var lootPerMinuteGUIPrefix = "LPM:"
+
+        @JvmField
+        @Entry(category = LOOTPERMINUTE, width = 7, isColor = true)
+        var lootPerMinuteGUIStartColor = "#FFFFFF"
+
+        @JvmField
+        @Entry(category = LOOTPERMINUTE, width = 7, isColor = true)
+        var lootPerMinuteGUIEndColor = "#990000"
+
+        @JvmField
+        @Entry(category = LOOTPERMINUTE)
+        var lootPerMinuteCancelLootChat = true
+
+        @JvmField
+        @Entry(category = HEALTH)
+        var lootPerMinuteGUITextShadow = true
     }
 }

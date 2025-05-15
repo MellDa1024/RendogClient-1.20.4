@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "rendogclient",
-    "version": "Final",
+    "version": "Dev",
     "name": "RendogClient",
     "description": "Client for RendogServer",
     "authors": ["Mell_Da"],

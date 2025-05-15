@@ -7,13 +7,16 @@ import kr.rendog.client.handler.RightClickHandler
 import kr.rendog.client.handler.ServerJoinHandler
 import kr.rendog.client.handler.TickHandler
 import kr.rendog.client.handler.chat.LeftChatHandler
+import kr.rendog.client.handler.chat.LootHandler
 import kr.rendog.client.handler.chat.MoonlightHandler
 import kr.rendog.client.handler.chat.RightChatHandler
 import kr.rendog.client.hud.CooldownHud
 import kr.rendog.client.hud.GodModeInfoHud
 import kr.rendog.client.hud.HealthHud
+import kr.rendog.client.hud.LootPerMinuteHud
 import kr.rendog.client.hud.PlayerModelHud
 import kr.rendog.client.registry.WeaponCoolRegistry
+import kr.rendog.client.service.LootPerMinuteService
 import kr.rendog.client.service.WeaponCoolService
 import kr.rendog.client.service.WeaponDataService
 import net.fabricmc.api.ClientModInitializer
@@ -41,11 +44,13 @@ class RendogClient : ClientModInitializer {
         weaponDataService.loadCoolDownData()
         val weaponCoolRegistry = WeaponCoolRegistry()
         val weaponCoolService = WeaponCoolService(weaponCoolRegistry, weaponDataService)
+        val lootPerMinuteService = LootPerMinuteService()
 
         HudRenderCallback.EVENT.register(CooldownHud(weaponCoolRegistry, weaponDataService))
         HudRenderCallback.EVENT.register(HealthHud())
         HudRenderCallback.EVENT.register(GodModeInfoHud())
         HudRenderCallback.EVENT.register(PlayerModelHud())
+        HudRenderCallback.EVENT.register(LootPerMinuteHud(lootPerMinuteService))
 
         ClientPlayConnectionEvents.JOIN.register(ServerJoinHandler())
 
@@ -54,6 +59,7 @@ class RendogClient : ClientModInitializer {
 
         ClientTickEvents.START_WORLD_TICK.register(TickHandler(weaponCoolService))
 
+        ClientReceiveMessageEvents.ALLOW_GAME.register(LootHandler(lootPerMinuteService))
         ClientReceiveMessageEvents.GAME.register(RightChatHandler(weaponCoolService))
         ClientReceiveMessageEvents.GAME.register(LeftChatHandler(weaponCoolService))
         ClientReceiveMessageEvents.GAME.register(MoonlightHandler(weaponCoolService))

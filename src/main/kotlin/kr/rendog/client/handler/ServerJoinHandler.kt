@@ -8,7 +8,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler
 import net.minecraft.text.Text
 
 class ServerJoinHandler: Join {
-    private val rendogServerIp = arrayOf("rendog.kr", "global.rendog.kr", "private-scn-sev99.scn.pw:1799")
+    private val rendogServerIp = arrayOf("rendog.kr", "global.rendog.kr", "private-scn-sev99.scn.pw:1799", "rendog.kr:25565", "global.rendog.kr:25565")
 
     override fun onPlayReady(handler: ClientPlayNetworkHandler, sender: PacketSender, client: MinecraftClient) {
         val address = handler.serverInfo?.address

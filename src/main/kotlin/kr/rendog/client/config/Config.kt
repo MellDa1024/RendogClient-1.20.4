@@ -191,7 +191,7 @@ class Config : MidnightConfig() {
         var lootPerMinuteCancelLootChat = true
 
         @JvmField
-        @Entry(category = HEALTH)
+        @Entry(category = LOOTPERMINUTE)
         var lootPerMinuteGUITextShadow = true
     }
 }

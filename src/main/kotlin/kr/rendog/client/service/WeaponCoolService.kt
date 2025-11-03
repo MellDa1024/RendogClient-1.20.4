@@ -76,8 +76,31 @@ class WeaponCoolService(
         }
     }
 
+    private fun checkSpawnPos(player: PlayerEntity): Boolean {
+        val spawnPos = player.world.spawnPos
+        val invalidPositions = setOf(
+            BlockPos(0, 0, 0),
+            BlockPos(-354, 12, -233),
+            BlockPos(-2002, 32, -1683),
+            BlockPos(-1246, 21, -248),
+            BlockPos(-2325, 21, 110),
+            BlockPos(940, 12, 1249),
+            BlockPos(-2625, 57, 1151),
+            BlockPos(-1414, 11, 1644),
+            BlockPos(-2032, 11, 2786),
+            BlockPos(-2029, 49, 4215),
+            BlockPos(-2075, 44, 5247),
+            BlockPos(-7999, 97, -7581),
+            BlockPos(-999, 150, -999),
+            BlockPos(-139, 54, 185),
+            BlockPos(1245, 30, -118),
+            BlockPos(0, 64, 0)
+        )
+        return spawnPos !in invalidPositions
+    }
+
     private fun checkVillageValidation(player: PlayerEntity, weaponName: String): Boolean {
-        return ((player.world.spawnPos != BlockPos(0, 0, 0)) ||
-                ((player.world.spawnPos == BlockPos(0, 0, 0)) && weaponDataService.isAbleInVillage(weaponName)))
+        return checkSpawnPos(player) ||
+                (!checkSpawnPos(player) && weaponDataService.isAbleInVillage(weaponName))
     }
 }

@@ -38,7 +38,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricApiVersion}"
     modImplementation("com.terraformersmc:modmenu:${project.modmenuVersion}")
 
-    include(modImplementation("maven.modrinth:midnightlib:${project.midnightlibVersion}"))
+    include(modImplementation("com.github.MellDa1024.MidnightLib:midnightlib-fabric:${project.midnightlibVersion}"))
     include(modImplementation(fabricApi.module("fabric-resource-loader-v0", project.fabricApiVersion)))
     include(modImplementation("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}"))
     include(implementation("org.reflections:reflections:${project.reflectionsVersion}")); include "org.javassist:javassist:${project.javassistVersion}"

@@ -15,18 +15,20 @@ import java.util.concurrent.ConcurrentHashMap
 class WeaponDataService {
     private companion object {
         private const val URL = "https://raw.githubusercontent.com/MellDa1024/RendogDataBase/main/WeaponDataV3.json"
+        private const val ERROR_MESSAGE_DELAY = 10000
     }
 
     private val gson = GsonBuilder().setPrettyPrinting().create()
     private var coolDown = ConcurrentHashMap<String, WeaponCDData>()
     private lateinit var coolDownData: WeaponDataList
     private var enabled = false
+    private var lastErrorMessageSent = 0L
 
     fun inDatabase(item: String): Boolean {
         return if (enabled) {
             coolDown.containsKey(item.deColorize().trim())
         } else {
-            MessageUtils.sendErrorMessage("Failed to load CoolDown data.")
+            sendLoadFailureMessage()
             false
         }
     }
@@ -38,7 +40,7 @@ class WeaponDataService {
                 CoolDownType.LEFT -> coolDown[item.deColorize()]?.leftCD ?: 0.0
             }
         } else {
-            MessageUtils.sendErrorMessage("Failed to load CoolDown data.")
+            sendLoadFailureMessage()
             0.0
         }
     }
@@ -54,7 +56,7 @@ class WeaponDataService {
         return if (enabled) {
             coolDown[item.deColorize()]?.cooldownGroup ?: item.deColorize()
         } else {
-            MessageUtils.sendErrorMessage("Failed to load CoolDown data.")
+            sendLoadFailureMessage()
             item.deColorize()
         }
     }
@@ -114,6 +116,13 @@ class WeaponDataService {
             weaponData.inVillage
         )
         //RendogClient.LOG.info("$weaponName registered. Data : ${coolDown[weaponName]}")
+    }
+
+    private fun sendLoadFailureMessage() {
+        if (lastErrorMessageSent + ERROR_MESSAGE_DELAY < System.currentTimeMillis()) {
+            lastErrorMessageSent = System.currentTimeMillis()
+            MessageUtils.sendErrorMessage("Failed to load CoolDown data.")
+        }
     }
 
     data class WeaponDataList(

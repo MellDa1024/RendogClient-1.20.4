@@ -90,9 +90,12 @@
   "rendogclient.midnightconfig.lootPerMinuteCancelLootChat.tooltip": "Hides loot message. (Rare loot will still be shown)",
   "rendogclient.midnightconfig.lootPerMinuteGUITextShadow": "Text Shadow",
   "rendogclient.midnightconfig.lootPerMinuteGUITextShadow.tooltip": "Whether to render text shadows.",
+  "rendogclient.midnightconfig.suppressPacketWarnings": "Suppress Packet Warnings",
+  "rendogclient.midnightconfig.suppressPacketWarnings.tooltip": "Suppresses warning logs for invalid packets.",
   "rendogclient.midnightconfig.category.cooldown": "Cooldown",
   "rendogclient.midnightconfig.category.health": "Health",
   "rendogclient.midnightconfig.category.godmodeinfo": "GodModeInfo",
   "rendogclient.midnightconfig.category.playermodel": "PlayerModel",
-  "rendogclient.midnightconfig.category.lootperminute": "LootPerMinute"
+  "rendogclient.midnightconfig.category.lootperminute": "LootPerMinute",
+  "rendogclient.midnightconfig.category.misc": "Misc"
 }

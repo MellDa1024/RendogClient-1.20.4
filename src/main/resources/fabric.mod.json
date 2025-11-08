@@ -14,6 +14,9 @@
     "icon": "assets/rendogclient/rendog_icon.png",
     "environment": "client",
     "accessWidener": "rendogclient.accesswidener",
+    "mixins": [
+      "mixins.rendogclient.json"
+    ],
     "entrypoints": {
         "client": [
             {

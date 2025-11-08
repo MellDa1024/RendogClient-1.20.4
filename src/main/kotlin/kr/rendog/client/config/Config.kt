@@ -9,6 +9,7 @@ class Config : MidnightConfig() {
         private const val GODMODEINFO = "godmodeinfo"
         private const val PLAYERMODEL = "playermodel"
         private const val LOOTPERMINUTE = "lootperminute"
+        private const val MISC = "misc"
 
         //Cooldown
         @JvmField
@@ -193,5 +194,9 @@ class Config : MidnightConfig() {
         @JvmField
         @Entry(category = LOOTPERMINUTE)
         var lootPerMinuteGUITextShadow = true
+
+        @JvmField
+        @Entry(category = MISC)
+        var suppressPacketWarnings = true
     }
 }

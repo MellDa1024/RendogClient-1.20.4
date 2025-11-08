@@ -90,9 +90,12 @@
   "rendogclient.midnightconfig.lootPerMinuteCancelLootChat.tooltip": "전리품 안내 메시지를 숨깁니다. (레어 전리품은 표시됩니다)",
   "rendogclient.midnightconfig.lootPerMinuteGUITextShadow": "텍스트 그림자",
   "rendogclient.midnightconfig.lootPerMinuteGUITextShadow.tooltip": "텍스트 그림자를 렌더링할지 여부를 선택합니다.",
+  "rendogclient.midnightconfig.suppressPacketWarnings": "패킷 경고 무시",
+  "rendogclient.midnightconfig.suppressPacketWarnings.tooltip": "잘못된 패킷 경고 로그를 무시합니다.",
   "rendogclient.midnightconfig.category.cooldown": "쿨타임",
   "rendogclient.midnightconfig.category.health": "체력",
   "rendogclient.midnightconfig.category.godmodeinfo": "무적 정보",
   "rendogclient.midnightconfig.category.playermodel": "플레이어 모델",
-  "rendogclient.midnightconfig.category.lootperminute": "분당 몬스터 수"
+  "rendogclient.midnightconfig.category.lootperminute": "분당 몬스터 수",
+  "rendogclient.midnightconfig.category.misc": "기타"
 }

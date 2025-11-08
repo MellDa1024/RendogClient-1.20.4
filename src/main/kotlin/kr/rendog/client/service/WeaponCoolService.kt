@@ -11,6 +11,18 @@ class WeaponCoolService(
     private val weaponCoolRegistry: WeaponCoolRegistry,
     private val weaponDataService: WeaponDataService
 ) {
+    private companion object {
+        private val villageSpawnPositions = setOf(
+            BlockPos(0, 0, 0), // SlimeVillage
+            BlockPos(-355, 12, -234), // Village
+            BlockPos(1245, 30, -119), // Mine
+        )
+
+        private val unallowedSpawnPositions = setOf(
+            BlockPos(-140, 54, 185), // Raid Park
+        )
+    }
+
     private var moonLightName = ""
     private var rightClickChat = ""
     private var leftClickChat = ""
@@ -27,7 +39,7 @@ class WeaponCoolService(
             CoolDownType.RIGHT -> rightClickChat = weaponName
             CoolDownType.LEFT -> leftClickChat = weaponName
         }
-        if (!checkVillageValidation(player, weaponName)) return
+        if (!isWeaponAllowedHere(player, weaponName)) return
         if (type == CoolDownType.RIGHT) {
             if (weaponName.contains("문라이트") && !weaponName.contains("초월")) {
                 moonLightName = weaponName
@@ -76,8 +88,19 @@ class WeaponCoolService(
         }
     }
 
-    private fun checkVillageValidation(player: PlayerEntity, weaponName: String): Boolean {
-        return ((player.world.spawnPos != BlockPos(0, 0, 0)) ||
-                ((player.world.spawnPos == BlockPos(0, 0, 0)) && weaponDataService.isAbleInVillage(weaponName)))
+    private fun isInVillage(player: PlayerEntity): Boolean {
+        val spawnPos = player.world.spawnPos
+        return spawnPos in villageSpawnPositions
+    }
+
+    private fun isInUnallowedWorld(player: PlayerEntity): Boolean {
+        val spawnPos = player.world.spawnPos
+        return spawnPos in unallowedSpawnPositions
+    }
+
+    private fun isWeaponAllowedHere(player: PlayerEntity, weaponName: String): Boolean {
+        if (isInUnallowedWorld(player)) return false
+        if (!isInVillage(player)) return true
+        return weaponDataService.isAbleInVillage(weaponName)
     }
 }

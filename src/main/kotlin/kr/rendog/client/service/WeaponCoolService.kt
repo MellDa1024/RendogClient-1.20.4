@@ -20,6 +20,14 @@ class WeaponCoolService(
 
         private val unallowedSpawnPositions = setOf(
             BlockPos(-140, 54, 185), // Raid Park
+            BlockPos(3, 63, 3), // Daily Duengeon
+        )
+
+        private val careerGroup = setOf(
+            "knight",
+            "theif",
+            "wizard",
+            "archer",
         )
     }
 
@@ -98,7 +106,15 @@ class WeaponCoolService(
         return spawnPos in unallowedSpawnPositions
     }
 
+    private fun isDailyDuengeon(player: PlayerEntity, weaponName: String): Boolean {
+        val group = weaponDataService.getGroup(weaponName)
+        val spawnPos = player.world.spawnPos
+        val isCareer = careerGroup.any { prefix -> group.startsWith(prefix) }
+        return spawnPos == BlockPos(3, 63, 3) && isCareer
+    }
+
     private fun isWeaponAllowedHere(player: PlayerEntity, weaponName: String): Boolean {
+        if (isDailyDuengeon(player, weaponName)) return true
         if (isInUnallowedWorld(player)) return false
         if (!isInVillage(player)) return true
         return weaponDataService.isAbleInVillage(weaponName)

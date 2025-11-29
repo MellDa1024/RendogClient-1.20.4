@@ -63,8 +63,8 @@ class RendogClient : ClientModInitializer {
         ClientTickEvents.START_WORLD_TICK.register(TickHandler(weaponCoolService))
 
         ClientReceiveMessageEvents.ALLOW_GAME.register(LootHandler(lootPerMinuteService))
-        ClientReceiveMessageEvents.GAME.register(RightChatHandler(weaponCoolService))
-        ClientReceiveMessageEvents.GAME.register(LeftChatHandler(weaponCoolService))
+        ClientReceiveMessageEvents.ALLOW_GAME.register(RightChatHandler(weaponCoolService))
+        ClientReceiveMessageEvents.ALLOW_GAME.register(LeftChatHandler(weaponCoolService))
         ClientReceiveMessageEvents.GAME.register(MoonlightHandler(weaponCoolService))
 
         Runtime.getRuntime().addShutdownHook(Thread {

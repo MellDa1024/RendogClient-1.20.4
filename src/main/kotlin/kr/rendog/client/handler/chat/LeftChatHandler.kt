@@ -29,11 +29,9 @@ class LeftChatHandler(
         if (patternedMessage2.find()) {
             val value = patternedMessage2.group(2).toDouble() + patternedMessage2.group(1).toDouble() * 60
             weaponCoolService.tryUpdateFromChat(leftClickChat, CoolDownType.LEFT, value)
-            return false
         } else if (patternedMessage.find()) {
             weaponCoolService.tryUpdateFromChat(leftClickChat, CoolDownType.LEFT, patternedMessage.group(1).toDouble())
-            return false
         }
-        return true
+        return false
     }
 }

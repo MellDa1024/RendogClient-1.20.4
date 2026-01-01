@@ -22,13 +22,6 @@ class WeaponCoolService(
             BlockPos(-140, 54, 185), // Raid Park
             BlockPos(3, 63, 3), // Daily Duengeon
         )
-
-        private val careerGroup = setOf(
-            "knight",
-            "theif",
-            "wizard",
-            "archer",
-        )
     }
 
     private var moonLightName = ""
@@ -107,9 +100,8 @@ class WeaponCoolService(
     }
 
     private fun isDailyDuengeon(player: PlayerEntity, weaponName: String): Boolean {
-        val group = weaponDataService.getGroup(weaponName)
+        val isCareer = weaponDataService.isCareerWeapon(weaponName)
         val spawnPos = player.world.spawnPos
-        val isCareer = careerGroup.any { prefix -> group.startsWith(prefix) }
         return spawnPos == BlockPos(3, 63, 3) && isCareer
     }
 

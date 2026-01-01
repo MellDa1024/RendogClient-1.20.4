@@ -72,8 +72,13 @@ class WeaponDataService {
             loadCoolDownData(coolDownData)
         } catch (e: Exception) {
             RendogClient.LOG.error("Failed loading CoolDownData : ", e)
+            RendogClient.LOG.error(e.stackTraceToString())
             false
         }
+    }
+
+    fun isCareerWeapon(item: String): Boolean {
+        return coolDown[item.deColorize()]?.isCareer ?: false
     }
 
     private fun loadCoolDownData(coolDownData: WeaponDataList): Boolean {
@@ -113,7 +118,8 @@ class WeaponDataService {
             weaponData.cooldownGroup,
             weaponData.leftCD[cdIndex],
             weaponData.rightCD[cdIndex],
-            weaponData.inVillage
+            weaponData.inVillage,
+            weaponData.isCareer
         )
         //RendogClient.LOG.info("$weaponName registered. Data : ${coolDown[weaponName]}")
     }
@@ -167,6 +173,8 @@ class WeaponDataService {
         val rightCD: Array<Double>,
         @SerializedName("InVillage")
         val inVillage: Boolean,
+        @SerializedName("IsCareer")
+        val isCareer: Boolean,
         @SerializedName("CoolDownGroup")
         val cooldownGroup: String
     ) {
@@ -182,6 +190,7 @@ class WeaponDataService {
             if (!leftCD.contentEquals(other.leftCD)) return false
             if (!rightCD.contentEquals(other.rightCD)) return false
             if (inVillage != other.inVillage) return false
+            if (isCareer != other.isCareer) return false
             if (cooldownGroup != other.cooldownGroup) return false
 
             return true
@@ -194,6 +203,7 @@ class WeaponDataService {
             result = 31 * result + leftCD.contentHashCode()
             result = 31 * result + rightCD.contentHashCode()
             result = 31 * result + inVillage.hashCode()
+            result = 31 * result + isCareer.hashCode()
             result = 31 * result + cooldownGroup.hashCode()
             return result
         }

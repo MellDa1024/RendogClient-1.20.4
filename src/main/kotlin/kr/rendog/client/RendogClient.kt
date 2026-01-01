@@ -16,7 +16,6 @@ import kr.rendog.client.hud.HealthHud
 import kr.rendog.client.hud.LootPerMinuteHud
 import kr.rendog.client.hud.PlayerModelHud
 import kr.rendog.client.registry.WeaponCoolRegistry
-import kr.rendog.client.service.DiscordPresence
 import kr.rendog.client.service.LootPerMinuteService
 import kr.rendog.client.service.WeaponCoolService
 import kr.rendog.client.service.WeaponDataService
@@ -47,8 +46,6 @@ class RendogClient : ClientModInitializer {
         val weaponCoolService = WeaponCoolService(weaponCoolRegistry, weaponDataService)
         val lootPerMinuteService = LootPerMinuteService()
 
-        DiscordPresence.start()
-
         HudRenderCallback.EVENT.register(CooldownHud(weaponCoolRegistry, weaponDataService))
         HudRenderCallback.EVENT.register(HealthHud())
         HudRenderCallback.EVENT.register(GodModeInfoHud())
@@ -66,9 +63,5 @@ class RendogClient : ClientModInitializer {
         ClientReceiveMessageEvents.ALLOW_GAME.register(RightChatHandler(weaponCoolService))
         ClientReceiveMessageEvents.ALLOW_GAME.register(LeftChatHandler(weaponCoolService))
         ClientReceiveMessageEvents.GAME.register(MoonlightHandler(weaponCoolService))
-
-        Runtime.getRuntime().addShutdownHook(Thread {
-            DiscordPresence.stop()
-        })
     }
 }
